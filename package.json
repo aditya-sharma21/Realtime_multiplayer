@@ -1,0 +1,27 @@
+{
+  "name": "multiplayer-sync-assignment",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Zero-dependency real-time multiplayer cursor and state sync engine",
+  "scripts": {
+    "start:server": "cd server && npm start",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "test": "cd server && npm test",
+    "test:server": "cd server && npm test",
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
+    "build": "cd server && npm run build && cd ../client && npm run build"
+  },
+  "keywords": [
+    "websocket",
+    "rfc6455",
+    "multiplayer",
+    "real-time",
+    "sync-engine",
+    "interpolation",
+    "dead-reckoning"
+  ],
+  "author": "",
+  "license": "MIT"
+}

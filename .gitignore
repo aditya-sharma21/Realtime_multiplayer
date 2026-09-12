@@ -1,0 +1,25 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs
+dist
+build
+out
+
+# Environment & Logs
+.env
+.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# System & OS
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+*.sublime-workspace
+*.sublime-project
