@@ -4,6 +4,26 @@ import { upgradeSocket, type RawWebSocket } from './rfc6455.ts';
 import { validateClientMessage, type ServerMessage } from './protocol.ts';
 import { RoomManager, type ClientSession } from './room.ts';
 
+import { existsSync, statSync, createReadStream } from 'node:fs';
+import { join, extname, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const CLIENT_DIST_DIR = join(__dirname, '../../client/dist');
+
+const MIME_TYPES: Record<string, string> = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2',
+};
+
 const PORT = parseInt(process.env.PORT || '3001', 10);
 const HOST = process.env.HOST || '0.0.0.0';
 
@@ -34,6 +54,22 @@ export function createMultiplayerServer() {
         })
       );
       return;
+    }
+
+    // Serve static client assets if client/dist is built
+    if (existsSync(CLIENT_DIST_DIR)) {
+      let filePath = join(CLIENT_DIST_DIR, url.pathname);
+      if (!existsSync(filePath) || statSync(filePath).isDirectory()) {
+        filePath = join(CLIENT_DIST_DIR, 'index.html');
+      }
+
+      if (existsSync(filePath) && statSync(filePath).isFile()) {
+        const ext = extname(filePath).toLowerCase();
+        const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+        res.writeHead(200, { 'Content-Type': contentType });
+        createReadStream(filePath).pipe(res);
+        return;
+      }
     }
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });

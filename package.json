@@ -4,6 +4,7 @@
   "private": true,
   "description": "Zero-dependency real-time multiplayer cursor and state sync engine",
   "scripts": {
+    "start": "node --experimental-strip-types server/src/server.ts",
     "start:server": "cd server && npm start",
     "dev:server": "cd server && npm run dev",
     "dev:client": "cd client && npm run dev",
@@ -11,7 +12,7 @@
     "test:server": "cd server && npm test",
     "build:client": "cd client && npm run build",
     "build:server": "cd server && npm run build",
-    "build": "cd server && npm run build && cd ../client && npm run build"
+    "build": "cd client && npm install && npm run build && cd ../server && npm install && npm run build"
   },
   "keywords": [
     "websocket",

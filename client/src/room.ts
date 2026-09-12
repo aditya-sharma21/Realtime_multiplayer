@@ -43,8 +43,11 @@ export function createRoom(options: CreateRoomOptions): RoomInstance {
     clientId,
     name = `Viewer-${clientId.slice(0, 4)}`,
     color = '#ff3366',
-    serverUrl = (typeof window !== 'undefined'
-      ? `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.hostname}:3001`
+    serverUrl = options.serverUrl || (typeof window !== 'undefined'
+      ? (new URLSearchParams(window.location.search).get('ws') ||
+         (window.location.port === '5173'
+           ? 'ws://localhost:3001'
+           : `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}`))
       : 'ws://localhost:3001'),
   } = options;
 
